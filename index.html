@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pranvesh Tripathi | Software Engineer</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a18;
+            color: #f8f8ff;
+            overflow-x: hidden;
+        }
+        
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 0 5%;
+        }
+        
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            background-color: rgba(10, 10, 24, 0.5);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #64ffda;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: #f8f8ff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #64ffda;
+        }
+
+        /* Hero Section */
+        .hero-wrapper {
+          position: relative;
+          width: 100%;
+          padding: 40px 0;
+        }
+
+        .hero {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 200px 50px;
+          flex-wrap: wrap;
+          gap: 20px;
+        }
+
+        .hero-text {
+          flex: 1;
+          min-width: 300px;
+          max-width: 600px;
+        }
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 1s ease-in;
+        }
+        
+        .hero h2 {
+            font-size: 2rem;
+            color: #64ffda;
+            margin-bottom: 1.5rem;
+            animation: fadeIn 1.2s ease-in;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            animation: fadeIn 1.4s ease-in;
+        }
+        
+        .hero button {
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            background-color: transparent;
+            border: 2px solid #64ffda;
+            color: #64ffda;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: fadeIn 1.6s ease-in;
+        }
+        
+        .hero button:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+        }
+
+        .hero-img-container {
+          position: absolute;
+          right: 180px;
+          top: 170px;
+          z-index: 1;
+        }
+        
+        /* Profile Image Section */
+        .floating-card {
+          display: flex;
+          align-items: center;
+          justify-content: start;
+          gap: 14px;
+          margin-top: 20px;
+          padding: 16px 24px;
+          background-color: #ffffffcc;
+          border-radius: 12px;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+          animation: floatCard 4s ease-in-out infinite;
+          width: fit-content;
+          max-width: 90%;
+        }
+
+        .profile-img {
+          width: 400px;
+          height: 400px;
+          object-fit: cover;
+          border-radius: 20%;
+          border: 4px solid #333;
+        }
+
+        /* Optional: floating animation */
+
+        .floating-img {
+          animation: floatImage 6s ease-in-out infinite;
+        }
+
+        @keyframes floatImage {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-60px); }
+        }
+        #typing-text {
+          min-height: 80px; /* Reserve space to prevent layout shift */
+          overflow: hidden;
+          white-space: normal;
+          line-height: 1.5;
+        }
+
+
+        .card-info h3 {
+          margin: 0;
+          font-size: 1.25rem;
+          color: #333;
+        }
+
+        .card-info p {
+          margin: 4px 0 0;
+          font-size: 0.95rem;
+          color: #555;
+        }
+
+        /* Floating animation */
+        @keyframes floatCard {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-8px);
+          }
+        }
+        
+        /* About Section */
+        .about {
+            padding: 5px 0;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #f8f8ff;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60%;
+            height: 3px;
+            background-color: #64ffda;
+        }
+        
+        .about-content {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .about-text {
+            flex: 1px;
+        }
+        
+        .about-text p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .skill-tag {
+            padding: 0.5rem 1rem;
+            background-color: rgba(100, 255, 218, 0.1);
+            color: #64ffda;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+
+        
+        /* Projects Section */
+        .projects {
+            padding: 5rem 0;
+        }
+        
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (min-width: 300px) {
+            .project-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr); /* 3 per row on large screens */
+                gap: 2rem;
+                margin-top: 3rem;
+            }
+        }
+                
+        .project-card {
+            background-color: #111128;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .project-img {
+            width: 100%;
+            height: 400px;
+            background: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top; /* options: center, top, bottom, left, right, or x% y% */
+            display: block;
+        }
+        
+        .project-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .project-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #f8f8ff;
+        }
+        
+        .project-description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #b4b4d9;
+            flex: 1;
+        }
+        
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .project-tech span {
+            font-size: 0.8rem;
+            color: #64ffda;
+        }
+        
+        .project-links {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .project-links a {
+            color: #f8f8ff;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+        
+        .project-links a:hover {
+            color: #64ffda;
+        }
+        /* Work Experience section */
+        .experience-item {
+            display: flex;
+            margin-bottom: 2rem;
+        }
+
+        .experience-date {
+            width: 150px;
+            font-weight: 600;
+            color: #64ffda;
+        }
+
+        .experience-details {
+            flex: 1;
+        }
+
+        .experience-details h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-details h4 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .experience-details ul {
+            list-style-type: none;
+        }
+
+        .experience-details li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .experience-details li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: #64ffda;
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        
+        .contact p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+        
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .contact-link {
+            color: #f8f8ff;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+        
+        .contact-link:hover {
+            color: #64ffda;
+        }
+        
+        .contact-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #b4b4d9;
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+            
+            .about-content {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <nav>
+        <div class="logo"><i>PRANVESH TRIPATHI </i> </div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+    
+    <div class="content">
+        <section class="hero">
+          <div class = "hero-text">
+            <h1>Pranvesh Tripathi</h1>
+            <h2>Full-Stack Developer</h2>
+            <span>
+              <p id="typing-text"></p>
+            </span>
+            
+            <button onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})">View My Work</button>
+          </div>
+          <div class = "hero-img-container">
+            <img src = "./images/HI1.png" alt = "Pranvesh Tripathi", class ="profile-img floating-img"/>
+          </div>
+        </section>
+        
+        <section id="about" class="about">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Hi, I'm Pranvesh Tripathi, a passionate and results-driven <font color = "blue"><b>Fullstack Software Engineer</b></font> currently working full-time as an AI/ML<br> <b>Software Engineer</b> at <b>Bambinos.live</b>. I officially began my professional journey in October 2024, following an 8-month internship<br> as a Data Analyst, where I developed a strong foundation in data wrangling, statistical analysis, and business intelligence reporting.</p>
+
+                    <p>At Bambinos.live, I’ve had the opportunity to lead and deliver <b><font color = "green">4+ full-cycle AI/ML projects</font></b>, taking ideas from concept to deployment.<br> My work spans across a wide spectrum of intelligent systems from building autonomous AGI agents and automated recommendation systems,<br> to crafting insightful data analytics dashboards and practical AI solutions tailored for real-world use cases.</p>
+
+                    <p>I specialize in Python and its strong ecosystem using frameworks and tools like <b><i><font color = "green">Flask, RESTful APIs, MongoDB, OpenCV, LangChain,<br> and sophisticated AGI components</font></i></b>. My development technique blends clean, scalable backend architecture with machine learning<br> workflows that produce actionable results.</p>
+
+                    <p> I’m deeply interested in building impactful software that is not only intelligent and adaptive but also accessible and efficient.<br> My goal is to continue pushing the boundaries of applied AI, building systems that learn, evolve, and drive smarter decision-making.</p>
+
+                    <section class="about">
+                      <h2>Here are a few technologies I've been working with recently :- </h2>
+                    </section>
+                    
+                    <div class="skills">
+                        <span class="skill-tag">Full-stack Development</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Flask (RESTful API)</span>
+                        <span class="skill-tag">MongoDB</span>
+                        <span class="skill-tag">MySQL</span>
+                        <span class="skill-tag">HuggingFace</span>
+                        <span class="skill-tag">Agents & Recommendation System</span>
+                        <span class="skill-tag">Machine Learning</span>
+                        <span class="skill-tag">Deep Learning</span>
+                        <span class="skill-tag">LangChain</span>
+                        <span class="skill-tag">OpenCV</span>
+                        <span class="skill-tag">Data Science</span>
+                        <span class="skill-tag">Html</span>
+                        <span class="skill-tag">CSS</span>
+                        <span class="skill-tag">JavaScript</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="projects" class="projects">
+            <h2 class="section-title">My Projects</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <div class="project-img">
+                        <img src="./images/FSD2.png" alt="Project 1">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Saakar-(Website for SAAS company)</h3>
+                        <p class="project-description">Developed a fully functional website for a technology service-based company to showcase its tech stack and offerings, utilizing modern web development tools and frameworks to ensure performance, responsiveness, and scalability.</p>
+                        <div class="project-tech">
+                            <span>Python</span> • 
+                            <span>Flask</span> •
+                            <span>RESTful API</span> •
+                            <span>MongoDB</span> •
+                            <span>HTML</span> •
+                            <span>CSS</span> •
+                            <span>JavaScript</span> • 
+                            <span>GIT</span> •
+                            <span>Docker</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-img">
+                        <img src="./images/MarksObot2.png" alt="Project 4">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">MarksObot-(AGI Recommendation System)</h3>
+                        <p class="project-description">The Agent analyzes students' input marks data to identify weak areas and intelligently recommends specific subjects or topics to focus on. This data-driven approach helps improve academic performance through personalized study guidance.</p>
+                        <div class="project-tech">
+                            <span>Python</span> • 
+                            <span>LangChain</span> •
+                            <span>LLama.cpp</span> •
+                            <span>HuggingFace</span> •
+                            <span>Multi-agent system</span> •
+                            <span>OpenAI</span> •
+                            <span>Machine Learning</span> • 
+                            <span>streamlit</span>
+                        </div>
+                    </div>
+                </div>  
+
+                 <div class="project-card">
+                    <div class="project-img">
+                        <img src="./images/LocaScan1.png" alt="Project 2">
+                    </div>  
+                    <div class="project-content">
+                        <h3 class="project-title">LocaScan</h3>
+                        <p class="project-description">LocaScan is a desktop software that scans package labels to extract customer and shipment details, storing them in both a central database and Excel-compatible local storage for efficient, offline-ready dispatch management.</p>
+                        <div class="project-tech">
+                            <span>Python</span> • 
+                            <span>EasyOCR</span> •
+                            <span>OpenCV</span> •
+                            <span>File Handling</span> •
+                            <span>Tkinter</span> •
+                            <span>TTkbootstrap</span> •
+                            <span>MVC</span> • 
+                            <span>sys</span> •
+                            <span>os</span> •
+                            <span>MongoDB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-img">
+                        <img src="./images/Doodle2.png" alt="Project 4">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Doodle.Live</h3>
+                        <p class="project-description">Doodle.Live is an AI-powered desktop application designed to simplify student learning by enabling image-based text scanning, real-time spelling mistake detection with intelligent suggestions, and a built-in text reader making classroom activities more efficient, engaging, and accessible</p>
+                        <div class="project-tech">
+                            <span>Python</span> • 
+                            <span>EasyOCR</span> •
+                            <span>OpenCV</span> •
+                            <span>PyUAC</span> •
+                            <span>Pyaudio</span> •
+                            <span>Pyttsx3</span> •
+                            <span>OS</span> •
+                            <span>SYS</span> • 
+                            <span>TTkbootstrap, TKinter</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="project-card">
+                    <div class="project-img">
+                        <img src="./images/EDA1.png" alt="Project 5">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Revenue Analysis & Performance Diagnostics</h3>
+                        <p class="project-description">Performed descriptive and diagnostic analysis using statistical techniques and visualization tools to identify revenue drop-off points and underlying trends affecting financial performance.</p>
+                        <div class="project-tech">
+                            <span>Jupyter Lab</span> • 
+                            <span>Python</span> •
+                            <span>Pandas</span> • 
+                            <span>Numpy</span> •
+                            <span>SKlearn</span> •
+                            <span>XGBoost</span> •
+                            <span>Matplotlib.pyplot</span> •
+                            <span>seaborn</span> •
+                            <span>Scipy</span> •
+                            <span>stat</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+         <section id="experience" class="experience">
+            <h2 class="section-title">Work Experience</h2>
+            
+            <div class="experience-item">
+                <div class="experience-date"> Oct-24 - Present</div>
+                <div class="experience-details">
+                    <h3>Software Engineer (AI-ML)</h3>
+                    <h4>Bambinos Learning Solution Pvt. Ltd.</h4>
+                    <ul>
+                        <li>Directed the end-to-end development of 4+ AI powered software products from inception to delivery., resulting in a 40% increase in user engagement</li>
+                        <li>Designed and deployed AGI for giving the feedback of student learning with the help of Flask and Langchain.</li>
+                        <li> Developed 'iReceiptor', a receipt tracking system based on OCR with 98% data accuracy.</li>
+                        <li>Created a tailor-made Windows installation wizard for hassle-free distribution</li>
+                        <li>Analyzed teacher-student engagement patterns using VTT data for learning insights.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-date">Aug-23 - Jul-24</div>
+                <div class="experience-details">
+                    <h3>Data Analyst Intern -> Data Analyst Associate</h3>
+                    <h4>GadgetLearn.com</h4>
+                    <ul>
+                        <li>Managed and coordinated over 3+ projects.</li>
+                        <li>Boosted satisfaction by 75% through actionable feedback insights.</li>
+                        <li>Identified key patterns and root causes impacting renewal rates through data analysis, leading to a targeted strategy that boosted renewal performance by over 70%.</li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-date">Mar-22 - Sep-22</div>
+                <div class="experience-details">
+                    <h3>Machine Learning Intern</h3>
+                    <h4> SoctAI Pvt. Ltd.</h4>
+                    <ul>
+                        <li>Implemented real-time object tracking with advanced CV techniques, achieving ~90% accuracy.</li>
+                        <li>Utilized OV2SLAM, LiDAR, and SLAM for precise 3D mapping and localization.</li>
+                        <li>Processed 10+ visual attributes or projects via OpenCV integrated with SLAM systems</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contact" class="contact">
+            <h2 class="section-title">Get In Touch</h2>
+            <p>I'm currently looking for new opportunities. Whether you have a question or just want to say hi, I'll get back to you as soon as possible!</p>
+            <button onclick="window.location.href='mailto:pranveshtripathi003@gmail.com'">Say Hello</button>
+            
+            <div class="contact-links">
+                <a href="https://github.com/PranveshTripathi" class="contact-link">
+                    <span class="contact-icon">GitHub</span>
+                </a>
+                <a href="https://www.linkedin.com/in/pranveshtri001/" class="contact-link">
+                    <span class="contact-icon">LinkedIn</span>
+                </a>
+                <a href="phone:+91 7011350032" class="contact-link">
+                    <span class="contact-icon">Twitter</span>
+                </a>
+            </div>
+        </section>
+        
+        <footer>
+            <p>Designed & Built by Pranvesh Tripathi © 2025</p>
+        </footer>
+    </div>
+    
+    <script>
+        const text = "Full-stack Python developer creating end-to-end AI solutions, including AGI agents, recommendation systems, and custom Windows software like Doodle and LocaScan. Skilled in Flask, RESTful APIs, LangChain, and OpenCV with a focus on real-world problem solving. Driven by innovation, I aim to bridge advanced AI with everyday business needs.";
+        const typingSpeed = 25; // Adjust typing speed (lower = faster)
+        let index = 0;
+
+        function typeWriter() {
+          if (index < text.length) {
+            document.getElementById("typing-text").innerHTML += text.charAt(index);
+            index++;
+            setTimeout(typeWriter, typingSpeed);
+          }
+        }
+
+        window.addEventListener("load", typeWriter);
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Three.js background animation
+        const initThreeJS = () => {
+            const container = document.getElementById('canvas-container');
+            
+            // Scene setup
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+            
+            // Particles setup
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 1500;
+            
+            const posArray = new Float32Array(particlesCount * 3);
+            
+            for (let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 5;
+            }
+            
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            
+            // Material
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.005,
+                color: 0x64ffda,
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            // Mesh
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+            
+            // Camera position
+            camera.position.z = 2;
+            
+            // Mouse movement effect
+            let mouseX = 0;
+            let mouseY = 0;
+            
+            function onDocumentMouseMove(event) {
+                mouseX = (event.clientX - window.innerWidth / 2) / 100;
+                mouseY = (event.clientY - window.innerHeight / 2) / 100;
+            }
+            
+            document.addEventListener('mousemove', onDocumentMouseMove);
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+            
+            // Animation loop
+            const animate = () => {
+                requestAnimationFrame(animate);
+                
+                particlesMesh.rotation.y += 0.001;
+                particlesMesh.rotation.x += 0.0005;
+                
+                // Responsive to mouse movement with slight delay for smooth effect
+                particlesMesh.rotation.y += (mouseX - particlesMesh.rotation.y) * 0.05;
+                particlesMesh.rotation.x += (mouseY - particlesMesh.rotation.x) * 0.05;
+                
+                renderer.render(scene, camera);
+            };
+            
+            animate();
+        };
+        
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Navigation scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.padding = '1rem 5%';
+                nav.style.backgroundColor = 'rgba(10, 10, 24, 0.9)';
+            } else {
+                nav.style.padding = '2rem 5%';
+                nav.style.backgroundColor = 'rgba(10, 10, 24, 0.5)';
+            }
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initThreeJS();
+            
+            // Animate sections on scroll
+            document.querySelectorAll('.section-title, .about-content, .project-card').forEach(element => {
+                element.style.opacity = 0;
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>
